@@ -1,0 +1,8 @@
+let g:spf13_no_autochdir = 1
+let g:indent_guides_enable_on_vim_startup = 0
+let g:ctrlp_working_path_mode = 0
+let g:spf13_bundle_groups=['general', 'neocomplcache', 'programming', 'ruby', 'python', 'javascript', 'html', 'misc']
+Bundle 'trishume/sexy-railscasts-theme'
+Bundle 'nanotech/jellybeans.vim'
+Bundle 'croaker/mustang-vim'
+Bundle 'jpo/vim-railscasts-theme'

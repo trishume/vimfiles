@@ -1,0 +1,11 @@
+inoremap jj <Esc>
+nnoremap ; :
+set nolist
+set listchars=
+let g:ctrlp_working_path_mode = 0
+let g:indent_guides_enable_on_vim_startup = 1
+colorscheme sublime-railscasts
+if has('gui_macvim')
+    set transparency=0          " Make the window slightly transparent
+    set lines=60
+endif
