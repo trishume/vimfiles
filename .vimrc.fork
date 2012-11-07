@@ -34,7 +34,12 @@ nmap <leader>p gg=G
 
 " Misc Plugin Customization
 let g:rsenseUseOmniFunc = 1
+let g:neocomplcache_omni_functions['ruby'] = 'RsenseCompleteFunction'
 "nnoremap <leader>rd :RSenseJumpToDefinition<CR>
+
+" Bisect
+nmap s <Plug>BisectUp
+nmap - <Plug>BisectDown
 
 " Ctrlp customization
 let g:ctrlp_extensions = ['tag', 'buffertag', 'dir']
