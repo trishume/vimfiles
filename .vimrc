@@ -196,10 +196,10 @@
     endif
 
     " Easier moving in tabs and windows
-    map <C-J> <C-W>j<C-W>_
-    map <C-K> <C-W>k<C-W>_
-    map <C-L> <C-W>l<C-W>_
-    map <C-H> <C-W>h<C-W>_
+    "map <C-J> <C-W>j<C-W>_
+    "map <C-K> <C-W>k<C-W>_
+    "map <C-L> <C-W>l<C-W>_
+    "map <C-H> <C-W>h<C-W>_
 
     " Wrapped lines goes down/up to next row, rather than next line in file.
     nnoremap j gj
@@ -467,7 +467,7 @@
         autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
         autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
         autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-        autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
+        " autocmd FileType ruby setlocal omnifunc=rubycomplete#Complete
 
         " Enable heavy omni completion.
         if !exists('g:neocomplcache_omni_patterns')
