@@ -16,7 +16,7 @@ set tabstop=2
 set softtabstop=2
 set wrap
 set linebreak
-set showbreak=…
+"set showbreak=…
 
 " Visual customization
 colorscheme sublime-railscasts
@@ -27,6 +27,23 @@ if has('gui_macvim')
   set lines=60
 endif
 
+" Other Customization
+
+function! Preserve(command)
+  " Preparation: save last search, and cursor position.
+  let _s=@/
+  let l = line(".")
+  let c = col(".")
+  " Do the business:
+  execute a:command
+  " Clean up: restore previous search history, and cursor position
+  let @/=_s
+  call cursor(l, c)
+endfunction
+
+nmap <leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
+nmap <leader>p :call Preserve("gg=G")<CR>
+
 " Fancy remaps
 "inoremap hh <Esc>l
 "inoremap jj <Esc>
@@ -34,8 +51,8 @@ nnoremap ; :
 nmap <silent> <leader>vr :e ~/.vimrc.fork<CR>
 
 " Line numbers only in current window.
-au WinEnter * :setlocal number
-au WinLeave * :setlocal nonumber
+"au WinEnter * :setlocal number
+"au WinLeave * :setlocal nonumber
 
 " Leader remaps
 nmap <leader>p gg=G
@@ -43,6 +60,10 @@ nmap <leader>p gg=G
 " Misc Plugin Customization
 let g:rsenseUseOmniFunc = 1
 let g:rooter_patterns = ['.git/', '.git', '.hg/', '.bzr/', '.svn/','Rakefile','q1.rb','p1.rb']
+
+"NerdTree
+map <leader>e  :NERDTree<CR>
+map <leader>nt :NERDTree<CR>
 
 " Conque
 let g:ConqueTerm_ReadUnfocused = 1
