@@ -2,6 +2,18 @@
 
 MYDIR="`dirname $(cd "${0%/*}" 2>/dev/null; echo "$PWD"/"${0##*/}")`"
 
-for i in .ctags .gvimrc .vim .vimrc .vimrc.local; do
+if [ ! -d $MYDIR/.vim/bundle ]; then
+    mkdir -p $MYDIR/.vim/bundle
+fi
+
+for i in .gvimrc .vim .vimrc .vimrc.bundles .vimrc.bundles.fork .vimrc.fork; do
     ln -s "$MYDIR/$i" ~/$i
 done
+
+if [ ! -e $HOME/.vim/bundle/vundle ]; then
+    echo "Installing Vundle"
+    git clone http://github.com/gmarik/vundle.git $HOME/.vim/bundle/vundle
+fi
+
+echo "update/install plugins using Vundle"
+vim -u $MYDIR/.vimrc.bundles - +BundleInstall! +BundleClean +qall
