@@ -14,39 +14,85 @@ let g:snips_author = 'Tristan Hume <trishume@gmail.com>'
 set shiftwidth=2
 set tabstop=2
 set softtabstop=2
+set wrap
+set linebreak
+set showbreak=…
 
 " Visual customization
 colorscheme sublime-railscasts
 let g:Powerline_symbols = 'fancy'
 set guifont=Monaco\ for\ Powerline:h14
 if has('gui_macvim')
-    set transparency=0          " Make the window slightly transparent
-    set lines=60
+  set transparency=0          " Make the window slightly transparent
+  set lines=60
 endif
 
 " Fancy remaps
-inoremap hh <Esc>l
-inoremap jj <Esc>
+"inoremap hh <Esc>l
+"inoremap jj <Esc>
 nnoremap ; :
+nmap <silent> <leader>vr :e ~/.vimrc.fork<CR>
+
+" Line numbers only in current window.
+au WinEnter * :setlocal number
+au WinLeave * :setlocal nonumber
 
 " Leader remaps
 nmap <leader>p gg=G
 
 " Misc Plugin Customization
 let g:rsenseUseOmniFunc = 1
-let g:neocomplcache_omni_functions['ruby'] = 'RsenseCompleteFunction'
-"nnoremap <leader>rd :RSenseJumpToDefinition<CR>
+let g:rooter_patterns = ['.git/', '.git', '.hg/', '.bzr/', '.svn/','Rakefile','q1.rb','p1.rb']
+
+" Conque
+let g:ConqueTerm_ReadUnfocused = 1
+let g:ConqueTerm_InsertOnEnter = 1
+let g:ConqueTerm_StartMessages = 1
+let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
+nmap <silent> <Leader>ir :execute 'ConqueTermSplit pry'<CR>
+let g:ConqueTerm_SendVisKey = '<Leader>e'
+
+function! s:openZSHTerm()
+  let g:trishume_zsh_term = conque_term#open('bash --login',['vertical botright split','vertical-resize 70'],1)
+endfunction
+function! s:executeRubyConque()
+  if exists("g:trishume_zsh_term")
+    call g:trishume_zsh_term.writeln("ruby ".bufname('%'))
+  endif
+endfunction
+
+nmap <silent> <Leader>z :call <SID>openZSHTerm()<CR>
+nmap <silent> <Leader>r :call <SID>executeRubyConque()<CR>
 
 " Bisect
-nmap s <Plug>BisectUp
-nmap - <Plug>BisectDown
+"nmap - <Plug>BisectUp
+"nmap s <Plug>BisectDown
+"let g:bisect_disable_insert
+"iunmap <Tab>
+
+" Arpeggio
+call arpeggio#load()
+Arpeggio inoremap ht <Esc>
+Arpeggio inoremap tn <Esc>
 
 " Ctrlp customization
 let g:ctrlp_extensions = ['tag', 'buffertag', 'dir']
 nnoremap <leader>b :CtrlPBuffer<CR>
-nnoremap <D-b> :CtrlPBuffer<CR>
-nnoremap <silent> <D-t> :CtrlPRoot<CR>
-nnoremap <silent> <D-p> :CtrlP ~/Dropbox<CR>
+
+" Set working directory to project root
+function! s:setcwd()
+  let cph = expand('%:p:h', 1)
+  if cph =~ '^.\+://' | retu | en
+  for mkr in ['DATA1.txt', 'DATA2.txt', 'DATA3.txt', 'DATA4.txt', 'DATA5.txt', '.git/', '.hg/', '.svn/', '.bzr/', '_darcs/', '.vimprojects','.vim']
+    let wd = call('find'.(mkr =~ '/$' ? 'dir' : 'file'), [mkr, cph.';'])
+    if wd != '' | let &acd = 0 | brea | en
+  endfo
+  exe 'cd!' fnameescape(wd == '' ? cph : substitute(wd, mkr.'$', '.', ''))
+endfunction
+
+autocmd BufEnter * call s:setcwd()
+nmap <silent> <leader>cd :call <SID>setcwd()<CR>
+
 
 " Moving around windows with hyper
 "map <C-D-S-M-j> <C-W>j<C-W>_
@@ -54,22 +100,25 @@ nnoremap <silent> <D-p> :CtrlP ~/Dropbox<CR>
 "map <C-D-S-M-l> <C-W>l<C-W>_
 "map <C-D-S-M-h> <C-W>h<C-W>_
 
+
 " Mac command keys
 if has("mac")
-    " create window splits with <Command-w>{s,v}
-    noremap <D-w> <C-w>   
-    inoremap <D-w> <C-w>  
+  " create window splits with <Command-w>{s,v}
+  noremap <D-w> <C-w>   
+  inoremap <D-w> <C-w>  
 
-    " Ctrlp bindings
-    nnoremap <silent> <D-b> :CtrlPBuffer<CR>
+  " Ctrlp bindings
+  nnoremap <silent> <D-t> :CtrlP<CR>
+  nnoremap <silent> <D-p> :CtrlP ~/Dropbox<CR>
+  nnoremap <silent> <D-b> :CtrlPBuffer<CR>
 
-    " navigate splits quickly with the normal movement keys
-    inoremap <D-h> <esc><C-w><C-h>
-    inoremap <D-j> <esc><C-w><C-j>
-    inoremap <D-k> <esc><C-w><C-k>
-    inoremap <D-l> <esc><C-w><C-l>
-    noremap <D-h> <C-w><C-h>
-    noremap <D-j> <C-w><C-j>
-    noremap <D-k> <C-w><C-k>
-    noremap <D-l> <C-w><C-l>
+  " navigate splits quickly with the normal movement keys
+  inoremap <D-h> <esc><C-w><C-h>
+  inoremap <D-j> <esc><C-w><C-j>
+  inoremap <D-k> <esc><C-w><C-k>
+  inoremap <D-l> <esc><C-w><C-l>
+  noremap <D-h> <C-w><C-h>
+  noremap <D-j> <C-w><C-j>
+  noremap <D-k> <C-w><C-k>
+  noremap <D-l> <C-w><C-l>
 endif

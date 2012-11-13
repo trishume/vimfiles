@@ -7,3 +7,8 @@ if has("mac")
     macm Tools.List\ Errors key=<nop>
     macm Tools.Make key=<nop>
 endif
+
+" Remove aqua scrollbars
+set guioptions-=rL
+" Don't use mac alerts, use vim prompts instead
+set guioptions+=c
