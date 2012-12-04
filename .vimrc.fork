@@ -7,6 +7,7 @@ set listchars=
 set scrolljump=1
 set noundofile
 let g:ctrlp_working_path_mode = 'ra'
+let g:ctrlp_show_hidden = 1
 let g:indent_guides_enable_on_vim_startup = 1
 let g:snips_author = 'Tristan Hume <trishume@gmail.com>'
 
@@ -21,7 +22,7 @@ set linebreak
 " Visual customization
 colorscheme sublime-railscasts
 let g:Powerline_symbols = 'fancy'
-set guifont=Monaco\ for\ Powerline:h14
+set guifont=Monaco\ for\ Powerline:h12
 if has('gui_macvim')
   set transparency=0          " Make the window slightly transparent
   set lines=60
@@ -44,18 +45,37 @@ endfunction
 nmap <leader>$ :call Preserve("%s/\\s\\+$//e")<CR>
 nmap <leader>p :call Preserve("gg=G")<CR>
 
+function SetWrap()
+	setlocal wrap
+  set virtualedit=
+  setlocal linebreak tw=80
+	setlocal display+=lastline
+	noremap  <buffer> <silent> <Up>   gk
+	noremap  <buffer> <silent> <Down> gj
+	noremap  <buffer> <silent> <Home> g<Home>
+	noremap  <buffer> <silent> <End>  g<End>
+	inoremap <buffer> <silent> <Up>   <C-o>gk
+	inoremap <buffer> <silent> <Down> <C-o>gj
+	inoremap <buffer> <silent> <Home> <C-o>g<Home>
+	inoremap <buffer> <silent> <End>  <C-o>g<End>
+endfunction
+
+au BufRead *.md call SetWrap()
+
 " Fancy remaps
 "inoremap hh <Esc>l
 "inoremap jj <Esc>
 nnoremap ; :
-nmap <silent> <leader>vr :e ~/.vimrc.fork<CR>
+nmap <silent> <leader>vr :e ~/Dropbox/github/vimfiles/.vimrc.fork<CR>
+nmap <silent> <leader>t<Space>  :tabnew<CR>
+nmap <silent> <leader>tn :tabnext<CR>
+nmap <silent> <leader>tp :tabp<CR>
 
 " Line numbers only in current window.
 "au WinEnter * :setlocal number
 "au WinLeave * :setlocal nonumber
 
 " Leader remaps
-nmap <leader>p gg=G
 
 " Misc Plugin Customization
 let g:rsenseUseOmniFunc = 1
@@ -93,8 +113,11 @@ nmap <silent> <Leader>r :call <SID>executeRubyConque()<CR>
 
 " Arpeggio
 call arpeggio#load()
-Arpeggio inoremap ht <Esc>
+"Arpeggio inoremap ht <Esc>
 Arpeggio inoremap tn <Esc>
+Arpeggio inoremap eu <Esc>
+Arpeggio nnoremap <silent> eh :tabp<CR>
+Arpeggio nnoremap <silent> el :tabn<CR>
 
 " Ctrlp customization
 let g:ctrlp_extensions = ['tag', 'buffertag', 'dir']
